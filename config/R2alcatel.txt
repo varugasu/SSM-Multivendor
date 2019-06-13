@@ -1,0 +1,27 @@
+configure port 1/1/1 no shutdown
+configure port 1/1/2 no shutdown
+configure port 1/1/3 no shutdown
+configure system name R2
+configure router interface system address 10.1.255.2/32
+configure router interface ge-1/1/1 address 10.1.2.2/24
+configure router interface ge-1/1/1 port 1/1/1
+configure router interface ge-1/1/2 address 10.2.3.2/24
+configure router interface ge-1/1/2 port 1/1/2
+configure router interface ge-1/1/3 address 10.2.6.2/24
+configure router interface ge-1/1/3 port 1/1/3
+configure router isis area 49.0000
+configure router isis level-capability level 2
+configure router isis level 2 wide-metrics-only
+configure router isis interface system passive
+configure router isis interface ge-1/1/1 interface-type point-to-point
+configure router isis interface ge-1/1/2 interface-type point-to-point
+configure router isis interface ge-1/1/3 interface-type point-to-point
+configure router isis interface ge-1/1/3 passive
+configure router pim interface system no shutdown
+configure router pim interface ge-1/1/1 no shutdown
+configure router pim interface ge-1/1/2 no shutdown
+configure router pim interface ge-1/1/3 no shutdown
+configure router pim interface ge-1/1/3 hello-interval 0
+configure router pim ssm-groups group-range 239.232.0.0/16
+configure router igmp interface ge-1/1/3 version 3
+configure router igmp ssm-translate grp-range 239.232.7.7 239.232.7.7 source 10.4.7.7

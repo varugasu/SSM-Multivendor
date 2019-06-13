@@ -1,0 +1,40 @@
+sys
+hostname R4
+user-interface console 0
+ idle-timeout 0 0
+isis
+ net 49.0000.0000.0000.0004.00
+ is-name R4
+ is-level level-2
+ cost-style wide
+multicast routing
+acl number 2390
+ rule permit source 239.232.0.0 0.0.255.255
+pim
+ ssm-policy 2390
+acl basic 2396
+ rule permit source 239.232.6.6 0
+igmp
+ ssm-mapping 10.2.6.6 2396
+int lo 0
+ ip add 10.1.255.4 32
+ pim sm
+ isis enable
+int gi 1/0
+ ip add 10.3.4.4 24
+ pim sm
+ isis enable
+ isis circuit-type p2p
+int gi 2/0
+ ip add 10.1.4.4 24
+ pim sm
+ isis enable
+ isis circuit-type p2p
+int gi 3/0
+ ip add 10.4.7.4 24
+ pim sm
+ isis enable
+ isis circuit-type p2p
+ isis silent
+ igmp enable
+ igmp version 3

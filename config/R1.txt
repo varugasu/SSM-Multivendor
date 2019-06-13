@@ -1,0 +1,29 @@
+configure
+set system host-name R1
+set system root-authentication  encrypted-password "$1$8DHK44ad$QkfTKk9uI39CKxFf46OmZ/"
+set interfaces lo0 unit 0 family inet address 10.1.255.1/32
+set interfaces lo0 unit 0 family iso address 49.0000.0000.0000.0001.00
+set interfaces ge-0/0/0 unit 0 family inet address 10.1.2.1/24
+set interfaces ge-0/0/0 unit 0 family iso
+set interfaces ge-0/0/1 unit 0 family inet address 10.1.4.1/24
+set interfaces ge-0/0/1 unit 0 family iso
+set interfaces ge-0/0/2 unit 0 family inet address 10.1.5.1/24
+set interfaces ge-0/0/2 unit 0 family iso
+set protocols isis level 1 disable
+set protocols isis level 2 wide-metrics-only
+set protocols isis interface lo0.0 passive
+set protocols isis interface ge-0/0/0.0 point-to-point
+set protocols isis interface ge-0/0/1.0 point-to-point
+set protocols isis interface ge-0/0/2.0 point-to-point passive
+set chassis fpc 0 pic 0 tunnel-services
+set protocols pim interface lo0.0 mode sparse
+set protocols pim interface ge-0/0/0.0 mode sparse
+set protocols pim interface ge-0/0/1.0 mode sparse
+set protocols pim interface ge-0/0/2.0 mode sparse
+set protocols pim interface ge-0/0/2.0 hello-interval 0
+set routing-options multicast ssm-groups [239.232/16]
+set protocols igmp interface ge-0/0/2.0 version 3  
+set policy-options policy-statement SSM_SOURCE_239.232.8.8 term 10 from route-filter 239.232.8.8/32 exact
+set policy-options policy-statement SSM_SOURCE_239.232.8.8 term 10 then accept
+set routing-options multicast ssm-map SSM_SOURCE_239.232.8.8 policy SSM_SOURCE_239.232.8.8
+set routing-options multicast ssm-map SSM_SOURCE_239.232.8.8 source [10.3.8.8]
